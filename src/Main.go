@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"log"
 	"os"
 )
 
@@ -21,14 +22,18 @@ type Person struct {
 
 func main() {
 	data := PersonData{}
-	file, err := ioutil.ReadFile("struct.json")
+	resource := "resources/"
+	files, err := ioutil.ReadDir(resource)
 	if err != nil {
-		fmt.Println("file does not exist")
-	} else {
-		json.Unmarshal([]byte(file), &data)
+		log.Fatal(err)
+	}
+	for _, file := range files {
+		jsonFile, _ := ioutil.ReadFile(resource + file.Name())
+		fmt.Println(file.Name())
+		json.Unmarshal([]byte(jsonFile), &data)
 		fmt.Println(data)
 		data.Names[0].Name = "John-new"
 		res, _ := json.MarshalIndent(data, "", "    ")
-		ioutil.WriteFile("struct.json", res, os.ModePerm)
+		ioutil.WriteFile(resource+file.Name(), res, os.ModePerm)
 	}
 }
