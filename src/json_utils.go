@@ -23,10 +23,10 @@ type Person struct {
 }
 
 func main() {
-	ReadCli()
+	readCli()
 }
 
-func ReadCli() {
+func readCli() {
 	fmt.Print("Enter path: ")
 	reader := bufio.NewReader(os.Stdin)
 	input, err := reader.ReadString('\n')
@@ -39,10 +39,10 @@ func ReadCli() {
 	// remove the delimeter from the string
 	input = strings.TrimSuffix(input, "\n")
 
-	ReadJson(input)
+	readJson(input)
 }
 
-func ReadJson(input string) {
+func readJson(input string) {
 	fmt.Println(input)
 	data := PersonData{}
 	files, err := ioutil.ReadDir(input)
