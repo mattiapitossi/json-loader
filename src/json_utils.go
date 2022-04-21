@@ -1,11 +1,13 @@
 package main
 
 import (
+	"bufio"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"log"
 	"os"
+	"strings"
 )
 
 type PersonData struct {
@@ -21,19 +23,34 @@ type Person struct {
 }
 
 func main() {
+	fmt.Print("Enter path: ")
+	reader := bufio.NewReader(os.Stdin)
+	input, err := reader.ReadString('\n')
+	if err != nil {
+		fmt.Println("An error occured while reading input. Please try again", err)
+		return
+	}
+
+	// remove the delimeter from the string
+	input = strings.TrimSuffix(input, "\n")
+
+	ReadJson(input)
+}
+
+func ReadJson(input string) {
+	fmt.Println(input)
 	data := PersonData{}
-	resource := "resources/"
-	files, err := ioutil.ReadDir(resource)
+	files, err := ioutil.ReadDir(input)
 	if err != nil {
 		log.Fatal(err)
 	}
 	for _, file := range files {
-		jsonFile, _ := ioutil.ReadFile(resource + file.Name())
+		jsonFile, _ := ioutil.ReadFile(input + "/" + file.Name())
 		fmt.Println(file.Name())
 		json.Unmarshal([]byte(jsonFile), &data)
 		fmt.Println(data)
 		data.Names[0].Name = "John-new"
 		res, _ := json.MarshalIndent(data, "", "    ")
-		ioutil.WriteFile(resource+file.Name(), res, os.ModePerm)
+		ioutil.WriteFile(input+"/"+file.Name(), res, os.ModePerm)
 	}
 }
