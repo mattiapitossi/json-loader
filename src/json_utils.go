@@ -23,9 +23,14 @@ type Person struct {
 }
 
 func main() {
+	ReadCli()
+}
+
+func ReadCli() {
 	fmt.Print("Enter path: ")
 	reader := bufio.NewReader(os.Stdin)
 	input, err := reader.ReadString('\n')
+
 	if err != nil {
 		fmt.Println("An error occured while reading input. Please try again", err)
 		return
@@ -41,9 +46,11 @@ func ReadJson(input string) {
 	fmt.Println(input)
 	data := PersonData{}
 	files, err := ioutil.ReadDir(input)
+
 	if err != nil {
 		log.Fatal(err)
 	}
+
 	for _, file := range files {
 		jsonFile, _ := ioutil.ReadFile(input + "/" + file.Name())
 		fmt.Println(file.Name())
