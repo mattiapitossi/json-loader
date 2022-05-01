@@ -36,7 +36,7 @@ func readCli() {
 		return
 	}
 
-	// remove the delimeter from the string
+	// remove the delimiter from the string
 	input = strings.TrimSuffix(input, "\n")
 
 	readJson(input)
